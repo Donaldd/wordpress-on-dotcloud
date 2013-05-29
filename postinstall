@@ -1,0 +1,20 @@
+#!/bin/sh
+
+# ~script by thatcher
+# move the uploads dir to a safe; persistent place under data and symlink it to the place
+# where wordpress expects it.
+# Changes to the site should be done on the local version and then pushed.
+
+
+if [ -d ~/data/uploads ]
+then
+      rm -rf ~/current/wp-content/uploads
+else
+      mkdir -p ~/data
+      mv ~/current/wp-content/uploads ~/data/uploads
+fi
+
+ln -s ~/data/uploads ~/current/wp-content/uploads
+
+# setup the databases
+php ~/code/setupdb.php

@@ -1,6 +1,6 @@
 www:
   type: php
   approot: wordpress
-  postinstall: ../postinstall.php
+  postinstall: ~/code/postinstall
 db:
   type: mysql
