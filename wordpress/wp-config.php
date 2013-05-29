@@ -15,14 +15,36 @@
  */
 
 // Read the file and convert the underlying JSON dictionary into a PHP array
-$env = json_decode(file_get_contents("/home/dotcloud/environment.json"), true);
+
+$configfile = "/home/dotcloud/environment.json";
+$env = json_decode(file_get_contents($configfile), true);
+
+if (!$env) {
+    //echo "configfile ".$configfile." not found";
+
+    $configfile = ABSPATH."localenv.json";
+
+    $env = json_decode(file_get_contents($configfile), true);
+    
+    // ** MySQL settings - You can get this info from your web host ** //
+    /** The name of the database for WordPress */
+   define('DB_NAME', $env['local_db_name']);
+}
+else {
+    // ** MySQL settings - You can get this info from your web host ** //
+    /** The name of the database for WordPress */
+    define('DB_NAME', 'wordpress');
+}
+
+
+define('FS_METHOD', 'direct');
 
 // ** MySQL settings - You can get this info from your web host ** //
 /** The name of the database for WordPress */
 define('DB_NAME', 'wordpress');
 
 /** MySQL database username */
-define('DB_USER', 'root');
+define('DB_USER', $env['DOTCLOUD_DB_MYSQL_LOGIN']);
 
 /** MySQL database password */
 define('DB_PASSWORD', $env['DOTCLOUD_DB_MYSQL_PASSWORD']);

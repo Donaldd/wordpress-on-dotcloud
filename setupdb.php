@@ -28,7 +28,7 @@ try {
     $dbh = new PDO("mysql:host=$host;port=$port", $user, $password);
     echo "\n";
     echo "Create DB '$dbname' if needed\n";
-    $dbh->exec("CREATE DATABASE IF NOT EXISTS `$dbname`") or die(print_r($dbh->errorInfo(), true));
+    $dbh->exec("CREATE DATABASE IF NOT EXISTS `$dbname` COLLATE=utf8_general_ci") or die(print_r($dbh->errorInfo(), true));
 } catch (Exception $e) {
     sleep(1);
     if(++$tries <= 60)

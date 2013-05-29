@@ -1,35 +1,50 @@
 Wordpress on dotCloud
 =====================
 
-Currently working!!! Don't hesitate to contact me when something breaks or needs an update. 
-
 This is the easiest way to launch a Wordpress website on dotCloud, it takes less than 2 minutes to get your Wordpress site in the Cloud.
-It works out of the box, just follow these easy steps and in the end you'll have our Wordpress site running on dotCloud.
 
-To run this code on dotCloud, you need a FREE `dotCloud account
-<https://www.dotcloud.com/register.html>`_ .
+It should work out of the box, just follow these easy steps and in the end you'll have our Wordpress site running on dotCloud.
 
-Install the `CLI
-<http://docs.dotcloud.com/0.9/firststeps/install/>`_ 
-(Command Line Interface)
-Then clone this repository, and push it to dotCloud::
+1. Install the `CLI <http://docs.dotcloud.com/0.9/firststeps/install/>`_ (Command Line Interface)
 
-  git clone git://github.com/Donaldd/wordpress-on-dotcloud.git
-  cd wordpress-on-dotcloud
-  echo "<?php" > wordpress/wp-salt.php ; curl https://api.wordpress.org/secret-key/1.1/salt/ >> wordpress/wp-salt.php
-  dotcloud create mywordpressapp 
-  dotcloud push
+2. Clone this repository
+   ```
+   git clone git://github.com/Donaldd/wordpress-on-dotcloud.git
+   ```
 
-Your Wordpress site is now running on dotCloud, to finalize your Wordpress setup 
-simply run::
-  dotcloud open
+3. Create a new file (wp-salt.php) with the salt which will be used for encrypting passwords, be careful to do this only once for a new site.
+   
+   ```
+   cd wordpress-on-dotcloud
+   ./create-salt.sh
+   ```
 
-Happy hacking!
+4. Setup your local environment (optional)
 
-You can also learn more by diving into `dotCloud documentations
-<http://docs.dotcloud.com/>`_, especially the two for the `PHP service
-<http://docs.dotcloud.com/services/php/>`_ and `MySQL service 
-<http://docs.dotcloud.com/0.9/services/mysql/>`_ which is used by this app.
+   Look in the file localenv.json and match it with the settings of your local MySQL database. 
+   This assumes you have a local webserver and MySQL running locally. It is out of scope of this introduction
+   to show you how to set that up.
 
-Feel free to also check out my `Blog
-<http://www.donckers.co/>`_
+5. Upload it!
+
+   dotcloud create wordpress 
+   dotcloud push
+   
+6. Check the site
+   dotcloud open
+
+
+You should install themes and plugins locally and then push them to dotCloud. Never install things on the server as they will be erased with the next push.
+
+Most likely you will need to modify the permissions on the wp-content settings folder in order to allow Wordpress to download and install files themes and plugins automatically. for me, setting 
+
+```
+cd wordpress
+chown -R me:_www wp-content 
+chmod -R 774 wp-content 
+
+does the trick. Replace me by your username.
+```
+
+
+Happy blogging!
